@@ -10,7 +10,7 @@ Works on multiple platforms: Windows/OSX/Linux.
 
 ### Installation
 
-    pip install access_points
+    sudo python setup.py install
 
 On linux systems you might want to install `nmcli` (recommended) or `iwlist`:
 
