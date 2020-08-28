@@ -163,18 +163,21 @@ class NetworkManagerWifiScanner(WifiScanner):
 
     def get_cmd(self):
         # note that this command requires some time in between / rescan
+        return "iw dev %s scan | awk -f /mnt/external/git/access_points/access_points/wlan_scan.awk | sort" % self.device
         return "nmcli -t -f ssid,bssid,signal,security device wifi list"
 
     def parse_output(self, output):
         results = []
 
         for line in output.strip().split('\n'):
-            try:
-                ssid, bssid, quality, security = split_escaped(line, ':')
-            except ValueError:
-                continue
-            access_point = AccessPoint(ssid, bssid, int(quality), security)
-            results.append(access_point)
+            if 'Load' not in line:
+                #print(line)
+                try:
+                    ssid, bssid, quality, security = split_escaped(line, '+')
+                except ValueError:
+                    continue
+                access_point = AccessPoint(ssid, bssid[:-3], int(quality[:-3]), security)
+                results.append(access_point)
 
         return results
 
