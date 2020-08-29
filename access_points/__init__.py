@@ -3,6 +3,7 @@ __version__ = "0.4.63"
 __repo__ = "https://github.com/kootenpv/access_points"
 
 import sys
+import os
 import re
 import platform
 import subprocess
@@ -162,9 +163,8 @@ class NetworkManagerWifiScanner(WifiScanner):
     """Get access points and signal strengths from NetworkManager."""
 
     def get_cmd(self):
-        # note that this command requires some time in between / rescan
-        return "iw dev %s scan | awk -f /mnt/external/git/access_points/access_points/wlan_scan.awk | sort" % self.device
-        return "nmcli -t -f ssid,bssid,signal,security device wifi list"
+        awk_file = os.path.join(os.path.dirname(__file__), "wlan_scan.awk")
+        return "iw dev %s scan | awk -f %s | sort" % (self.device, awk_file)
 
     def parse_output(self, output):
         results = []
