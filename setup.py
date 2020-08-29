@@ -16,7 +16,7 @@ setup(
     entry_points={'console_scripts': ['access_points = access_points.__init__:main']},
     license='MIT',
     packages=find_packages(),
-    package_data={'data': ['*.txt']},
+    package_data={'data': ['*.txt'], 'access_points': ['*.awk']},
     include_package_data=True,
     classifiers=[
         'Environment :: Console',
